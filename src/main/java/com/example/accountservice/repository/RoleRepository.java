@@ -1,6 +1,6 @@
-package com.example.applicationgateway.repository;
+package com.example.accountservice.repository;
 
-import com.example.applicationgateway.models.Role;
+import com.example.accountservice.models.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

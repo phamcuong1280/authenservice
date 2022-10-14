@@ -1,4 +1,4 @@
-package com.example.applicationgateway.config;
+package com.example.accountservice.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.jackson.ModelResolver;

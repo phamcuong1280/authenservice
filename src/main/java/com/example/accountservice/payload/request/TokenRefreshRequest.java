@@ -1,4 +1,4 @@
-package com.example.applicationgateway.payload.request;
+package com.example.accountservice.payload.request;
 
 import lombok.Data;
 

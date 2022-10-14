@@ -1,11 +1,11 @@
-package com.example.applicationgateway.controllers;
+package com.example.accountservice.controllers;
 
-import com.example.applicationgateway.common.ServiceClient;
-import com.example.applicationgateway.config.rest.BaseResponse;
-import com.example.applicationgateway.dto.ReponseDto;
-import com.example.applicationgateway.models.Product;
-import com.example.applicationgateway.repository.ProductRepository;
-import com.example.applicationgateway.security.services.UserPrincipal;
+import com.example.accountservice.common.ServiceClient;
+import com.example.accountservice.config.rest.BaseResponse;
+import com.example.accountservice.dto.ReponseDto;
+import com.example.accountservice.models.Product;
+import com.example.accountservice.repository.ProductRepository;
+import com.example.accountservice.security.services.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;

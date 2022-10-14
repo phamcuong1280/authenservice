@@ -1,12 +1,11 @@
-package com.example.applicationgateway.common;
+package com.example.accountservice.common;
 
-import com.example.applicationgateway.exception.HousingErrors;
-import com.example.applicationgateway.exception.constant.HousingBusinessError;
-import com.example.applicationgateway.exception.constant.HousingException;
-import com.example.applicationgateway.web.Resource;
+import com.example.accountservice.exception.HousingErrors;
+import com.example.accountservice.exception.constant.HousingBusinessError;
+import com.example.accountservice.exception.constant.HousingException;
+import com.example.accountservice.web.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -64,13 +63,13 @@ public abstract class ServiceClient {
         return resp.getData();
     }
 
-    public <T, B, R extends Resource<T>> T  post(String uri, B body, Class<B> bClass, Class<R> responseType) {
+    public <T, B, R extends Resource<T>> T post(String uri, B body, Class<B> bClass, Class<R> responseType) {
         var monoResp =
                 this.webClient
                         .post()
                         .uri(uri)
                         .accept(MediaType.APPLICATION_JSON)
-                        .headers(a -> a.setBasicAuth("user","password"))
+                        .headers(a -> a.setBasicAuth("user", "password"))
                         .body(Mono.just(body), bClass)
                         .retrieve()
                         .onStatus(
