@@ -1,8 +1,7 @@
-package com.example.applicationgateway.config.rest;
+package com.example.accountservice.config.rest;
 
-
-import com.example.applicationgateway.exception.constant.HousingBusinessError;
-import com.example.applicationgateway.exception.constant.HousingException;
+import com.example.accountservice.exception.constant.HousingBusinessError;
+import com.example.accountservice.exception.constant.HousingException;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.common.collect.Lists;
 import lombok.Data;

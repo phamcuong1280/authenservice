@@ -1,4 +1,4 @@
-package com.example.applicationgateway.config;//package com.edu.springjwt.config;
+package com.example.accountservice.config;//package com.edu.springjwt.config;
 //
 //import com.edu.springjwt.security.services.UserPrincipal;
 //import org.springframework.data.domain.AuditorAware;

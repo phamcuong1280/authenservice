@@ -1,7 +1,7 @@
-package com.example.applicationgateway.security.jwt;
+package com.example.accountservice.security.jwt;
 
-import com.example.applicationgateway.security.services.UserDetailsServiceImpl;
-import com.example.applicationgateway.security.services.UserPrincipal;
+import com.example.accountservice.security.services.UserDetailsServiceImpl;
+import com.example.accountservice.security.services.UserPrincipal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

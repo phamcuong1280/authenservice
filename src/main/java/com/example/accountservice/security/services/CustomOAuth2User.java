@@ -1,4 +1,4 @@
-package com.example.applicationgateway.security.services;
+package com.example.accountservice.security.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
