@@ -1,4 +1,4 @@
-//package com.example.applicationgateway.config;
+package com.example.accountservice.config;//package com.example.applicationgateway.config;
 //
 //import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
 //import org.springframework.context.annotation.Bean;
