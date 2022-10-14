@@ -1,4 +1,4 @@
-package com.example.applicationgateway.security.services;
+package com.example.accountservice.security.services;
 
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

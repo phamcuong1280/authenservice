@@ -1,4 +1,4 @@
-package com.example.accountservice.account;
+package com.example.accountservice.usecase.account;
 
 import com.example.accountservice.common.GooglePojo;
 import com.example.accountservice.exception.UserNotFound;

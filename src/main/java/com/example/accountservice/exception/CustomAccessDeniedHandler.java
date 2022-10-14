@@ -1,7 +1,7 @@
-package com.example.applicationgateway.exception;
+package com.example.accountservice.exception;
 
-import com.example.applicationgateway.config.rest.BaseResponse;
-import com.example.applicationgateway.exception.constant.HousingException;
+import com.example.accountservice.config.rest.BaseResponse;
+import com.example.accountservice.exception.constant.HousingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;

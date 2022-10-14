@@ -1,4 +1,4 @@
-package com.example.applicationgateway.models;
+package com.example.accountservice.models;
 
 public interface ERole {
     String ROLE_USER = "ROLE_USER";
