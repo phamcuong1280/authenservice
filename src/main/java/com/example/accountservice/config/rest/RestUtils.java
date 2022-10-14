@@ -1,4 +1,4 @@
-package com.example.applicationgateway.config.rest;
+package com.example.accountservice.config.rest;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;

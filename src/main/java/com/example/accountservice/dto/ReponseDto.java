@@ -1,6 +1,6 @@
-package com.example.applicationgateway.dto;
+package com.example.accountservice.dto;
 
-import com.example.applicationgateway.web.Resource;
+import com.example.accountservice.web.Resource;
 
 import java.util.List;
 
