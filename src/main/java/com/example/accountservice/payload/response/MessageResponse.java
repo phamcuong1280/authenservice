@@ -1,4 +1,4 @@
-package com.example.applicationgateway.payload.response;
+package com.example.accountservice.payload.response;
 
 public class MessageResponse {
     private String message;

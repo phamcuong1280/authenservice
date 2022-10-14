@@ -1,13 +1,13 @@
-package com.example.applicationgateway.controllers;
+package com.example.accountservice.controllers;
 
-import com.example.applicationgateway.common.GooglePojo;
-import com.example.applicationgateway.common.GoogleUtils;
-import com.example.applicationgateway.config.rest.BaseResponse;
-import com.example.applicationgateway.exception.HousingErrors;
-import com.example.applicationgateway.mapper.AuthControllerMapper;
-import com.example.applicationgateway.repository.AccountRepository;
-import com.example.applicationgateway.security.jwt.JwtUtils;
-import com.example.applicationgateway.usecases.account.IAccountUseCase;
+import com.example.accountservice.common.GooglePojo;
+import com.example.accountservice.common.GoogleUtils;
+import com.example.accountservice.config.rest.BaseResponse;
+import com.example.accountservice.exception.HousingErrors;
+import com.example.accountservice.mapper.AuthControllerMapper;
+import com.example.accountservice.repository.AccountRepository;
+import com.example.accountservice.security.jwt.JwtUtils;
+import com.example.accountservice.usecase.account.IAccountUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
