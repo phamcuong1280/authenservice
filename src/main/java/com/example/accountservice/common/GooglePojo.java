@@ -1,4 +1,4 @@
-package com.example.applicationgateway.common;
+package com.example.accountservice.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

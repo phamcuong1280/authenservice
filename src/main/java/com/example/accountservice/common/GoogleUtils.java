@@ -1,4 +1,4 @@
-package com.example.applicationgateway.common;
+package com.example.accountservice.common;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

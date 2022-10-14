@@ -1,10 +1,10 @@
-package com.example.applicationgateway.exception;
+package com.example.accountservice.exception;
 
 
-import com.example.applicationgateway.config.rest.BaseResponse;
-import com.example.applicationgateway.config.rest.FieldViolation;
-import com.example.applicationgateway.exception.constant.HousingBusinessError;
-import com.example.applicationgateway.exception.constant.HousingException;
+import com.example.accountservice.config.rest.BaseResponse;
+import com.example.accountservice.config.rest.FieldViolation;
+import com.example.accountservice.exception.constant.HousingBusinessError;
+import com.example.accountservice.exception.constant.HousingException;
 import com.google.common.base.CaseFormat;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
@@ -12,7 +12,6 @@ import org.springframework.core.codec.DecodingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;

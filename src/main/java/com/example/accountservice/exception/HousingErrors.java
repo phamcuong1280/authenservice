@@ -1,6 +1,6 @@
-package com.example.applicationgateway.exception;
+package com.example.accountservice.exception;
 
-import com.example.applicationgateway.exception.constant.HousingBusinessError;
+import com.example.accountservice.exception.constant.HousingBusinessError;
 import org.springframework.http.HttpStatus;
 
 

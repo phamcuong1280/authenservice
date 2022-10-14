@@ -1,9 +1,9 @@
-package com.example.accountservice.account;
+package com.example.accountservice.usecase.account;
 
-import com.example.applicationgateway.common.GooglePojo;
-import com.example.applicationgateway.models.Account;
-import com.example.applicationgateway.models.RefreshToken;
-import com.example.applicationgateway.payload.request.SignupRequest;
+import com.example.accountservice.common.GooglePojo;
+import com.example.accountservice.models.Account;
+import com.example.accountservice.models.RefreshToken;
+import com.example.accountservice.payload.request.SignupRequest;
 
 public interface IAccountUseCase {
     Account loginWithGoogle(GooglePojo googlePojo);

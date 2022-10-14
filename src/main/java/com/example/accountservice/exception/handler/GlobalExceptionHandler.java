@@ -1,4 +1,4 @@
-package com.example.applicationgateway.exception.handler;//package com.edu.springjwt.exception.handler;
+package com.example.accountservice.exception.handler;//package com.edu.springjwt.exception.handler;
 //
 //import com.edu.springjwt.exception.HomeBusinessError;
 //import com.edu.springjwt.exception.HomeException;

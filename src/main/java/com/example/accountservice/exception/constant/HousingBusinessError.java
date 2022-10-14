@@ -1,4 +1,4 @@
-package com.example.applicationgateway.exception.constant;
+package com.example.accountservice.exception.constant;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
