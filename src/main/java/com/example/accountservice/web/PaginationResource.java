@@ -1,4 +1,4 @@
-package com.example.applicationgateway.web;
+package com.example.accountservice.web;
 
 
 public class PaginationResource implements IPaginationResource {

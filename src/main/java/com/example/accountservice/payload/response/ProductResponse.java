@@ -1,7 +1,6 @@
-package com.example.applicationgateway.payload.response;
+package com.example.accountservice.payload.response;
 
-import com.example.applicationgateway.web.Resource;
-import lombok.Data;
+import com.example.accountservice.web.Resource;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,10 +1,9 @@
-package com.example.applicationgateway.controllers;
+package com.example.accountservice.controllers;
 
-import com.example.applicationgateway.common.ServiceClient;
-import com.example.applicationgateway.config.rest.BaseResponse;
-import com.example.applicationgateway.payload.request.ProductCreateRequest;
-import com.example.applicationgateway.payload.response.ProductResponse;
-import com.example.applicationgateway.web.Resource;
+import com.example.accountservice.common.ServiceClient;
+import com.example.accountservice.payload.request.ProductCreateRequest;
+import com.example.accountservice.payload.response.ProductResponse;
+import com.example.accountservice.web.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController extends ServiceClient {
     private final String url;
     private final String basicAuth;
+
     @Autowired
     public ProductController(
             @Value("${spring.service.product-service.url}") String url,

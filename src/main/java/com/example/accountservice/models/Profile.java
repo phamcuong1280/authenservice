@@ -1,7 +1,7 @@
-package com.example.applicationgateway.models;
+package com.example.accountservice.models;
 
 
-import com.example.applicationgateway.enumCommon.Gender;
+import com.example.accountservice.enumCommon.Gender;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

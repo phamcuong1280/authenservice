@@ -1,4 +1,4 @@
-package com.example.applicationgateway.models;
+package com.example.accountservice.models;
 
 
 import lombok.Getter;
