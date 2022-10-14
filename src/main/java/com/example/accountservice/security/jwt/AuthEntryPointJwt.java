@@ -1,8 +1,8 @@
-package com.example.applicationgateway.security.jwt;
+package com.example.accountservice.security.jwt;
 
-import com.example.applicationgateway.config.rest.BaseResponse;
-import com.example.applicationgateway.exception.HousingErrors;
-import com.example.applicationgateway.exception.constant.HousingException;
+import com.example.accountservice.config.rest.BaseResponse;
+import com.example.accountservice.exception.HousingErrors;
+import com.example.accountservice.exception.constant.HousingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
