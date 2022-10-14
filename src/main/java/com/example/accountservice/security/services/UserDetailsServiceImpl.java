@@ -1,12 +1,11 @@
-package com.example.applicationgateway.security.services;
+package com.example.accountservice.security.services;
 
-import com.example.applicationgateway.exception.UserNotFound;
-import com.example.applicationgateway.models.Account;
-import com.example.applicationgateway.models.AccountRole;
-import com.example.applicationgateway.models.Role;
-import com.example.applicationgateway.repository.AccountRepository;
-import com.example.applicationgateway.repository.AccountRoleRepository;
-import com.example.applicationgateway.repository.RoleRepository;
+import com.example.accountservice.models.Account;
+import com.example.accountservice.models.AccountRole;
+import com.example.accountservice.models.Role;
+import com.example.accountservice.repository.AccountRepository;
+import com.example.accountservice.repository.AccountRoleRepository;
+import com.example.accountservice.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account account = accountRepository.findByEmail(username)
-                .orElseThrow(() -> new UserNotFound("User Not Found with username: " + username));
+                .orElse(new Account());
         var accountRole = accountRoleRepository.findAllByAccountUuid(account.getUuid());
         var uuids = accountRole.stream().map(AccountRole::getRoleUuid).collect(Collectors.toList());
         List<Role> roles = roleRepository.findByUuidIn(uuids);

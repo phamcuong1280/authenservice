@@ -1,10 +1,10 @@
-package com.example.applicationgateway.security;
+package com.example.accountservice.security;
 
-import com.example.applicationgateway.exception.CustomAccessDeniedHandler;
-import com.example.applicationgateway.security.jwt.AuthEntryPointJwt;
-import com.example.applicationgateway.security.jwt.AuthTokenFilter;
-import com.example.applicationgateway.security.services.CustomOAuth2UserService;
-import com.example.applicationgateway.security.services.UserDetailsServiceImpl;
+import com.example.accountservice.exception.CustomAccessDeniedHandler;
+import com.example.accountservice.security.jwt.AuthEntryPointJwt;
+import com.example.accountservice.security.jwt.AuthTokenFilter;
+import com.example.accountservice.security.services.CustomOAuth2UserService;
+import com.example.accountservice.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.example.applicationgateway.common;
+package com.example.accountservice.common;
 
 public interface Url {
     String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";

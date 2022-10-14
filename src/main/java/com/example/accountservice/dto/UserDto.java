@@ -1,4 +1,4 @@
-package com.example.applicationgateway.dto;
+package com.example.accountservice.dto;
 
 import lombok.Data;
 
