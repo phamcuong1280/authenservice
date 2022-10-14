@@ -1,4 +1,4 @@
-package com.example.applicationgateway.config.resolvers;//package com.edu.springjwt.config.resolvers;
+package com.example.accountservice.config.resolvers;//package com.edu.springjwt.config.resolvers;
 //
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import org.springframework.core.MethodParameter;

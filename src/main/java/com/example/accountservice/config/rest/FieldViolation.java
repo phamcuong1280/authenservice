@@ -1,4 +1,4 @@
-package com.example.applicationgateway.config.rest;
+package com.example.accountservice.config.rest;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
