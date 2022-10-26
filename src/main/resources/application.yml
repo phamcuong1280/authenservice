@@ -2,7 +2,7 @@ spring:
   application:
     name: account-service
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3307}/db_example
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3308}/${MYSQL_DATABASE:db_example}
     username: ${MYSQL_USER:root}
     password: ${MYSQL_PASSWORD:123456789}
   jpa:

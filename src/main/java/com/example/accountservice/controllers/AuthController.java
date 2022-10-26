@@ -1,20 +1,21 @@
 package com.example.accountservice.controllers;
 
-import com.example.accountservice.config.rest.BaseResponse;
-import com.example.accountservice.exception.HousingErrors;
-import com.example.accountservice.exception.UserNotFound;
-import com.example.accountservice.exception.constant.HousingException;
-import com.example.accountservice.models.RefreshToken;
-import com.example.accountservice.payload.request.LoginRequest;
-import com.example.accountservice.payload.request.SignupRequest;
-import com.example.accountservice.payload.response.JwtResponse;
-import com.example.accountservice.repository.AccountRepository;
-import com.example.accountservice.security.jwt.JwtUtils;
-import com.example.accountservice.security.services.UserDetailsServiceImpl;
-import com.example.accountservice.security.services.UserPrincipal;
-import com.example.accountservice.usecase.account.IAccountUseCase;
+import com.example.accountservice.common.config.rest.BaseResponse;
+import com.example.accountservice.common.exception.HousingErrors;
+import com.example.accountservice.common.exception.UserNotFound;
+import com.example.accountservice.common.exception.constant.HousingException;
+import com.example.accountservice.common.security.jwt.JwtUtils;
+import com.example.accountservice.common.security.services.UserDetailsServiceImpl;
+import com.example.accountservice.common.security.services.UserPrincipal;
+import com.example.accountservice.controllers.payload.request.LoginRequest;
+import com.example.accountservice.controllers.payload.request.SignupRequest;
+import com.example.accountservice.controllers.payload.response.JwtResponse;
+import com.example.accountservice.infrastructure.models.RefreshToken;
+import com.example.accountservice.infrastructure.repository.AccountRepository;
+import com.example.accountservice.usecases.account.IAccountUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,12 +37,23 @@ public class AuthController {
     @PostMapping("/signin")
     public BaseResponse<?> authenticateUser(@Valid @RequestBody LoginRequest request) {
         UserPrincipal userDetails = (UserPrincipal) userDetailsService.loadUserByUsername(request.getEmail());
-        boolean matches = encoder.matches(request.getPassword(), userDetails.getPassword());
-        if (!matches) {
+        if (userDetails.getUuid() == null) {
             return BaseResponse.ofFailed(HousingErrors.USER_NOT_UNAUTHORIZED);
         }
+        boolean matches = encoder.matches(request.getPassword(), userDetails.getPassword());
+        if (userDetails.getUuid() == null || !matches) {
+            return BaseResponse.ofFailed(HousingErrors.USER_NOT_UNAUTHORIZED);
+        }
+        accountRepository.login(userDetails.getUuid());
         return getBaseResponse(userDetails);
     }
+
+
+    @GetMapping("/{email}")
+    public BaseResponse<?> getByEmail(@PathVariable String email) {
+        return BaseResponse.ofSucceeded(accountRepository.findByEmailAndStatusIsTrue(email));
+    }
+
 
     @PostMapping("/signup")
     public BaseResponse<?> registerUser(@Valid @RequestBody SignupRequest request) {
@@ -53,7 +65,7 @@ public class AuthController {
 
     @PostMapping("/password")
     public BaseResponse<?> setPassword(@Valid @RequestBody LoginRequest request) {
-        var account = accountRepository.findByEmail(request.getEmail()).orElseThrow(UserNotFound::new);
+        var account = accountRepository.findByEmailAndStatusIsTrue(request.getEmail()).orElseThrow(UserNotFound::new);
         account.setPassword(encoder.encode(request.getPassword()));
         var current = accountRepository.save(account);
         UserPrincipal userDetails = (UserPrincipal) userDetailsService.loadUserByUsername(request.getEmail());
@@ -78,6 +90,13 @@ public class AuthController {
                 refreshToken.getRefreshToken()));
     }
 
+
+    @GetMapping("/signout")
+    public BaseResponse<?> logoutUser() {
+        var userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        accountRepository.logout(userDetails.getUuid());
+        return BaseResponse.ofSucceeded("logout success");
+    }
 //    @PostMapping("/refreshtoken")
 //    public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest request) {
 //        String requestRefreshToken = request.getRefreshToken();
@@ -93,11 +112,5 @@ public class AuthController {
 //                        "Refresh token is not in database!"));
 //    }
 
-//    @PostMapping("/signout")
-//    public ResponseEntity<?> logoutUser() {
-//        var userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        String accountId = userDetails.getUuid();
-//        refreshTokenService.deleteByAccountId(accountId);
-//        return ResponseEntity.ok(new MessageResponse("Log out successful!"));
-//    }
+
 }

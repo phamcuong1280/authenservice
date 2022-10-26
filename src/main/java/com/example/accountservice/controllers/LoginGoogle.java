@@ -1,13 +1,13 @@
 package com.example.accountservice.controllers;
 
-import com.example.accountservice.common.GooglePojo;
-import com.example.accountservice.common.GoogleUtils;
-import com.example.accountservice.config.rest.BaseResponse;
-import com.example.accountservice.exception.HousingErrors;
-import com.example.accountservice.mapper.AuthControllerMapper;
-import com.example.accountservice.repository.AccountRepository;
-import com.example.accountservice.security.jwt.JwtUtils;
-import com.example.accountservice.usecase.account.IAccountUseCase;
+import com.example.accountservice.common.config.rest.BaseResponse;
+import com.example.accountservice.common.exception.HousingErrors;
+import com.example.accountservice.common.googleDto.GooglePojo;
+import com.example.accountservice.common.googleDto.GoogleUtils;
+import com.example.accountservice.common.security.jwt.JwtUtils;
+import com.example.accountservice.controllers.mapper.AuthControllerMapper;
+import com.example.accountservice.infrastructure.repository.AccountRepository;
+import com.example.accountservice.usecases.account.IAccountUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;

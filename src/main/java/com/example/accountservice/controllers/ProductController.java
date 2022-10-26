@@ -1,9 +1,9 @@
 package com.example.accountservice.controllers;
 
-import com.example.accountservice.common.ServiceClient;
-import com.example.accountservice.payload.request.ProductCreateRequest;
-import com.example.accountservice.payload.response.ProductResponse;
-import com.example.accountservice.web.Resource;
+import com.example.accountservice.common.web.Resource;
+import com.example.accountservice.common.web.ServiceClient;
+import com.example.accountservice.controllers.payload.request.ProductCreateRequest;
+import com.example.accountservice.controllers.payload.response.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;

@@ -1,11 +1,10 @@
 package com.example.accountservice.controllers;
 
-import com.example.accountservice.common.ServiceClient;
-import com.example.accountservice.config.rest.BaseResponse;
-import com.example.accountservice.dto.ReponseDto;
-import com.example.accountservice.models.Product;
-import com.example.accountservice.repository.ProductRepository;
-import com.example.accountservice.security.services.UserPrincipal;
+import com.example.accountservice.common.config.rest.BaseResponse;
+import com.example.accountservice.common.security.services.UserPrincipal;
+import com.example.accountservice.common.web.ServiceClient;
+import com.example.accountservice.infrastructure.models.Product;
+import com.example.accountservice.infrastructure.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +15,16 @@ import org.springframework.web.reactive.function.client.WebClient;
 @RestController
 @RequestMapping("/api/test")
 public class TestController extends ServiceClient {
+
+    @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private AccountRoleRepository accountRoleRepository;
+    @Autowired
+    private ProfileRepository profileRepository;
+
 
     @Autowired
     private WebClient webClient;
@@ -44,28 +53,22 @@ public class TestController extends ServiceClient {
 
     @GetMapping("/mod")
     @PreAuthorize("hasRole('ADMIN')")
-    public String moderatorAccess() {
+    public String createAccount() {
         return "Moderator Board.";
     }
 
     @GetMapping("/admin")
-    public String adminAccess() {
+    @PreAuthorize("hasRole('USER')")
+    public String createProduct() {
         return "Admin Board.";
     }
 
-    @GetMapping("/forward")
-    public BaseResponse<?> listOpportunities() {
-        return BaseResponse.ofSucceeded(get("http://localhost:8089", ReponseDto.class, null));
-//        var responseType = new ParameterizedTypeReference<BaseResponse>() {};
-//        HttpHeaders httpHeaders = RestUtils.createHeadersWithBasicAuth("john123", "password");
-//         var monoResp = webClient.get()
-//                 .uri("http://localhost:8089")
-//                 .accept(MediaType.APPLICATION_JSON)
-//                 .headers(a -> a.setBasicAuth("john123", "password"))
-//                 .retrieve()
-//                 .bodyToMono(responseType);
-//
-//        var resp = monoResp.block();
-//        return BaseResponse.ofSucceeded(resp.getData());
+    @GetMapping("/delete")
+    public String delete() {
+        accountRoleRepository.deleteAll();
+        roleRepository.deleteAll();
+        profileRepository.deleteAll();
+        accountRepository.deleteAll();
+        return "Delete success";
     }
 }
