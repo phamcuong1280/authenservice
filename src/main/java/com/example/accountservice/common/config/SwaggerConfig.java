@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
-    private static final String API_TITLE = "1Housing Agent Channel";
+    private static final String API_TITLE = "Account_Service";
     private static final String API_VERSION = "v1";
     private static final String SECURITY_SCHEME_NAME = "bearerAuth";
 
