@@ -40,7 +40,7 @@ public class AuthController extends ServiceClient {
     private final PasswordEncoder encoder;
     private final JwtUtils jwtUtils;
     private final IAccountUseCase accountUseCase;
-    @Value("${spring.service.product-service.carts.url}")
+    @Value("${spring.service.product-service.cart.url}")
     private String url;
     @Value("${spring.service.product-service.basic-auth}")
     private String basicAuth;
