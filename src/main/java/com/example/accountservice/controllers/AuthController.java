@@ -7,20 +7,13 @@ import com.example.accountservice.common.exception.constant.HousingException;
 import com.example.accountservice.common.security.jwt.JwtUtils;
 import com.example.accountservice.common.security.services.UserDetailsServiceImpl;
 import com.example.accountservice.common.security.services.UserPrincipal;
-import com.example.accountservice.common.web.Resource;
-import com.example.accountservice.common.web.ServiceClient;
 import com.example.accountservice.controllers.payload.request.LoginRequest;
-import com.example.accountservice.controllers.payload.request.ProductCreateRequest;
 import com.example.accountservice.controllers.payload.request.SignupRequest;
 import com.example.accountservice.controllers.payload.response.JwtResponse;
-import com.example.accountservice.controllers.payload.response.ProductResponse;
 import com.example.accountservice.infrastructure.models.RefreshToken;
-import com.example.accountservice.infrastructure.repository.AccountRepository;
+import com.example.accountservice.infrastructure.repository.JpaAccountRepository;
 import com.example.accountservice.usecases.account.IAccountUseCase;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,16 +27,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
-public class AuthController extends ServiceClient {
+public class AuthController{
     private final UserDetailsServiceImpl userDetailsService;
-    private final AccountRepository accountRepository;
+    private final JpaAccountRepository jpaAccountRepository;
     private final PasswordEncoder encoder;
     private final JwtUtils jwtUtils;
     private final IAccountUseCase accountUseCase;
-    @Value("${spring.service.product-service.cart.url}")
-    private String url;
-    @Value("${spring.service.product-service.basic-auth}")
-    private String basicAuth;
 
     @PostMapping("/signin")
     public BaseResponse<?> authenticateUser(@Valid @RequestBody LoginRequest request) {
@@ -55,14 +44,14 @@ public class AuthController extends ServiceClient {
         if (userDetails.getUuid() == null || !matches) {
             return BaseResponse.ofFailed(HousingErrors.USER_NOT_UNAUTHORIZED);
         }
-        accountRepository.login(userDetails.getUuid());
+        jpaAccountRepository.login(userDetails.getUuid());
         return getBaseResponse(userDetails);
     }
 
 
     @GetMapping("/{email}")
     public BaseResponse<?> getByEmail(@PathVariable String email) {
-        return BaseResponse.ofSucceeded(accountRepository.findByEmailAndStatusIsTrue(email));
+        return BaseResponse.ofSucceeded(jpaAccountRepository.findByEmailAndStatusIsTrue(email));
     }
 
 
@@ -73,16 +62,16 @@ public class AuthController extends ServiceClient {
         }
         var account = accountUseCase.createUser(request);
 
-        var resourceType = new ParameterizedTypeReference<Resource<String>>() {};
-        get(url, Resource.class, basicAuth);
+
+
         return BaseResponse.ofSucceeded(account);
     }
 
     @PostMapping("/password")
     public BaseResponse<?> setPassword(@Valid @RequestBody LoginRequest request) {
-        var account = accountRepository.findByEmailAndStatusIsTrue(request.getEmail()).orElseThrow(UserNotFound::new);
+        var account = jpaAccountRepository.findByEmailAndStatusIsTrue(request.getEmail()).orElseThrow(UserNotFound::new);
         account.setPassword(encoder.encode(request.getPassword()));
-        var current = accountRepository.save(account);
+        var current = jpaAccountRepository.save(account);
         UserPrincipal userDetails = (UserPrincipal) userDetailsService.loadUserByUsername(request.getEmail());
         boolean matches = encoder.matches(request.getPassword(), userDetails.getPassword());
         if (!matches) {
@@ -109,7 +98,7 @@ public class AuthController extends ServiceClient {
     @GetMapping("/signout")
     public BaseResponse<?> logoutUser() {
         var userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        accountRepository.logout(userDetails.getUuid());
+        jpaAccountRepository.logout(userDetails.getUuid());
         return BaseResponse.ofSucceeded("logout success");
     }
 //    @PostMapping("/refreshtoken")

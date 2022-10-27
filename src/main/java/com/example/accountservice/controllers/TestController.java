@@ -17,19 +17,19 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class TestController extends ServiceClient {
 
     @Autowired
-    private AccountRepository accountRepository;
+    private JpaAccountRepository jpaAccountRepository;
     @Autowired
-    private RoleRepository roleRepository;
+    private JpaRoleRepository jpaRoleRepository;
     @Autowired
-    private AccountRoleRepository accountRoleRepository;
+    private JpaAccountRoleRepository jpaAccountRoleRepository;
     @Autowired
-    private ProfileRepository profileRepository;
+    private JpaProfileRepository jpaProfileRepository;
 
 
     @Autowired
     private WebClient webClient;
     @Autowired
-    private ProductRepository productRepository;
+    private JpaProductRepository jpaProductRepository;
 
 
     @GetMapping("/all")
@@ -48,7 +48,7 @@ public class TestController extends ServiceClient {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public BaseResponse<?> createProduct(@RequestBody Product product) {
         var user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return BaseResponse.ofSucceeded(productRepository.save(product));
+        return BaseResponse.ofSucceeded(jpaProductRepository.save(product));
     }
 
     @GetMapping("/mod")
@@ -65,10 +65,10 @@ public class TestController extends ServiceClient {
 
     @GetMapping("/delete")
     public String delete() {
-        accountRoleRepository.deleteAll();
-        roleRepository.deleteAll();
-        profileRepository.deleteAll();
-        accountRepository.deleteAll();
+        jpaAccountRoleRepository.deleteAll();
+        jpaRoleRepository.deleteAll();
+        jpaProfileRepository.deleteAll();
+        jpaAccountRepository.deleteAll();
         return "Delete success";
     }
 }

@@ -6,7 +6,7 @@ import com.example.accountservice.common.googleDto.GooglePojo;
 import com.example.accountservice.common.googleDto.GoogleUtils;
 import com.example.accountservice.common.security.jwt.JwtUtils;
 import com.example.accountservice.controllers.mapper.AuthControllerMapper;
-import com.example.accountservice.infrastructure.repository.AccountRepository;
+import com.example.accountservice.infrastructure.repository.JpaAccountRepository;
 import com.example.accountservice.usecases.account.IAccountUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,7 +28,7 @@ public class LoginGoogle {
     private final IAccountUseCase accountUseCase;
     private final AuthControllerMapper mapper;
     private AuthenticationManager authenticationManager;
-    private AccountRepository accountRepository;
+    private JpaAccountRepository jpaAccountRepository;
     private PasswordEncoder encoder;
     private UserDetailsService service;
     private JwtUtils jwtUtils;

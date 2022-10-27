@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Repository
-public interface AccountRepository extends JpaRepository<Account, Long> {
+public interface JpaAccountRepository extends JpaRepository<Account, Long> {
 
     Boolean existsByEmail(String email);
 

@@ -17,7 +17,7 @@ public class ProductController extends ServiceClient {
 
     @Autowired
     public ProductController(
-            @Value("${spring.service.product-service.url}") String url,
+            @Value("${spring.service.product-service.products.url}") String url,
             @Value("${spring.service.product-service.basic-auth}") String basicAuth) {
         this.url = url;
         this.basicAuth = basicAuth;

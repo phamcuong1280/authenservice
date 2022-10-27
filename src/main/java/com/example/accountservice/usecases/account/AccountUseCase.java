@@ -2,43 +2,69 @@ package com.example.accountservice.usecases.account;
 
 import com.example.accountservice.common.exception.UserNotFound;
 import com.example.accountservice.common.googleDto.GooglePojo;
+import com.example.accountservice.common.web.Resource;
+import com.example.accountservice.common.web.ServiceClient;
 import com.example.accountservice.controllers.payload.request.LoginRequest;
 import com.example.accountservice.controllers.payload.request.SignupRequest;
 import com.example.accountservice.infrastructure.models.*;
 import com.example.accountservice.infrastructure.repository.*;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.UUID;
 
 @Component
-@AllArgsConstructor
-public class AccountUseCase implements IAccountUseCase {
-    private final AccountRepository accountRepository;
-    private final RoleRepository roleRepository;
-    private final ProfileRepository profileRepository;
-    private final AccountRoleRepository accountRoleRepository;
+public class AccountUseCase extends ServiceClient implements IAccountUseCase{
+    private final JpaAccountRepository jpaAccountRepository;
+    private final JpaRoleRepository jpaRoleRepository;
+    private final JpaProfileRepository jpaProfileRepository;
+    private final JpaAccountRoleRepository jpaAccountRoleRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder encoder;
+    private final String url;
+    private final String basicAuth;
 
-    public static Account getRole(LoginRequest request, RoleRepository roleRepository, AccountRepository accountRepository, ProfileRepository profileRepository, AccountRoleRepository accountRoleRepository, PasswordEncoder encoder) {
-        Role role = roleRepository.findByRole(ERole.ROLE_USER).orElse(null);
+    @Autowired
+    public AccountUseCase(JpaAccountRepository jpaAccountRepository, JpaRoleRepository jpaRoleRepository,
+                          JpaProfileRepository jpaProfileRepository, JpaAccountRoleRepository jpaAccountRoleRepository,
+                          RefreshTokenRepository refreshTokenRepository, PasswordEncoder encoder,
+                          @Value("${spring.service.product-service.cart.url}")
+                          String url,
+                          @Value("${spring.service.product-service.basic-auth}")
+                          String basicAuth) {
+        this.jpaAccountRepository = jpaAccountRepository;
+        this.jpaRoleRepository = jpaRoleRepository;
+        this.jpaProfileRepository = jpaProfileRepository;
+        this.jpaAccountRoleRepository = jpaAccountRoleRepository;
+        this.refreshTokenRepository = refreshTokenRepository;
+        this.encoder = encoder;
+        this.url = url;
+        this.basicAuth = basicAuth;
+    }
+
+    public static Account getRole(LoginRequest request, JpaRoleRepository jpaRoleRepository, JpaAccountRepository jpaAccountRepository, JpaProfileRepository jpaProfileRepository, JpaAccountRoleRepository jpaAccountRoleRepository, PasswordEncoder encoder) {
+        Role role = jpaRoleRepository.findByRole(ERole.ROLE_USER).orElse(null);
         if (role == null) {
-            role = roleRepository.save(new Role(UUID.randomUUID().toString(), ERole.ROLE_USER));
+            role = jpaRoleRepository.save(new Role(UUID.randomUUID().toString(), ERole.ROLE_USER));
         }
 
-        var account = accountRepository.findByEmailAndStatusIsTrue(request.getEmail()).orElseThrow(UserNotFound::new);
+        var account = jpaAccountRepository.findByEmailAndStatusIsTrue(request.getEmail()).orElseThrow(UserNotFound::new);
         var profile = new Profile();
         profile.setUuid(UUID.randomUUID().toString());
         profile.setAccountUuid(account.getUuid());
         profile.setEmail(request.getEmail());
-        profileRepository.save(profile);
+        jpaProfileRepository.save(profile);
+
+
         var accountRole = new AccountRole(account.getUuid(), role.getUuid());
-        accountRoleRepository.save(accountRole);
+        jpaAccountRoleRepository.save(accountRole);
         account.setUuid(UUID.randomUUID().toString());
         account.setPassword(encoder.encode(request.getPassword()));
-        return accountRepository.save(account);
+        return jpaAccountRepository.save(account);
     }
 
     @Override
@@ -47,7 +73,7 @@ public class AccountUseCase implements IAccountUseCase {
         account.setUuid(UUID.randomUUID().toString());
         account.setEmail(googlePojo.getEmail());
         account.setUsername(googlePojo.getName());
-        account = accountRepository.save(account);
+        account = jpaAccountRepository.save(account);
         Profile profile = new Profile();
         profile.setAccountUuid(account.getUuid());
         profile.setUuid(UUID.randomUUID().toString());
@@ -56,14 +82,14 @@ public class AccountUseCase implements IAccountUseCase {
         profile.setFullName(googlePojo.getName());
         profile.setEmail(googlePojo.getEmail());
         profile.setImage(googlePojo.getPicture());
-        profileRepository.save(profile);
+        jpaProfileRepository.save(profile);
 
-        Role role = roleRepository.findByRole(ERole.ROLE_USER).orElse(null);
+        Role role = jpaRoleRepository.findByRole(ERole.ROLE_USER).orElse(null);
         if (role == null) {
-            role = roleRepository.save(new Role(UUID.randomUUID().toString(), ERole.ROLE_USER));
+            role = jpaRoleRepository.save(new Role(UUID.randomUUID().toString(), ERole.ROLE_USER));
         }
         AccountRole accountRole = new AccountRole(account.getUuid(), role.getUuid());
-        accountRoleRepository.save(accountRole);
+        jpaAccountRoleRepository.save(accountRole);
         return account;
     }
 
@@ -80,29 +106,31 @@ public class AccountUseCase implements IAccountUseCase {
         var account = new Account(request.getUserName(), request.getEmail(), encoder.encode(request.getPassword()));
         Role role;
         if (request.getRole() != null) {
-            role = roleRepository.save(new Role(UUID.randomUUID().toString(), request.getRole()));
+            role = jpaRoleRepository.save(new Role(UUID.randomUUID().toString(), request.getRole()));
         } else {
-            role = roleRepository.findByRole(ERole.ROLE_USER).orElse(null);
+            role = jpaRoleRepository.findByRole(ERole.ROLE_USER).orElse(null);
             if (role == null) {
-                role = roleRepository.save(new Role(UUID.randomUUID().toString(), ERole.ROLE_USER));
+                role = jpaRoleRepository.save(new Role(UUID.randomUUID().toString(), ERole.ROLE_USER));
             }
         }
         account.setUuid(UUID.randomUUID().toString());
-        account = accountRepository.save(account);
+        account = jpaAccountRepository.save(account);
+
+        get(url+"/"+ account.getUuid(), ResponseCart.class, basicAuth);
         var profile = new Profile();
         profile.setUuid(UUID.randomUUID().toString());
         profile.setEmail(request.getEmail());
         profile.setAccountUuid(account.getUuid());
-        profileRepository.save(profile);
+        jpaProfileRepository.save(profile);
 
 
         var accountRole = new AccountRole(account.getUuid(), role.getUuid());
-        accountRoleRepository.save(accountRole);
+        jpaAccountRoleRepository.save(accountRole);
         return account;
     }
 
     @Override
     public Boolean existsByEmail(String email) {
-        return accountRepository.existsByEmail(email);
+        return jpaAccountRepository.existsByEmail(email);
     }
 }

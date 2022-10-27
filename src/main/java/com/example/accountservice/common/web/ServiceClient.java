@@ -34,7 +34,7 @@ public abstract class ServiceClient {
                         .get()
                         .uri(uri)
                         .accept(MediaType.APPLICATION_JSON)
-                        .headers(a -> a.setBasicAuth(basicAuth))
+                        .headers(a -> a.setBasicAuth("user", "password"))
                         .retrieve()
                         .onStatus(
                                 HttpStatus::isError,
