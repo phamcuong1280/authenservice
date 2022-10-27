@@ -97,12 +97,12 @@ public abstract class ServiceClient {
         return resp.getData();
     }
 
-    public <T, B, R extends Resource<T>> T put(String uri, B body, Class<B> bClass, Class<R> responseType, String basicAuth) {
+    public <T, B, R extends Resource<T>> T put(String uri, B body, Class<B> bClass, Class<R> responseType) {
         Mono<R> monoResp;
         monoResp = this.webClient
                 .put()
                 .uri(uri)
-                .headers(a -> a.setBasicAuth(basicAuth))
+                .headers(a -> a.setBasicAuth("user", "password"))
                 .body(Mono.just(body), bClass)
                 .retrieve()
                 .onStatus(

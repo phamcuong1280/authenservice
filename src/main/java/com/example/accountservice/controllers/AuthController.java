@@ -7,13 +7,20 @@ import com.example.accountservice.common.exception.constant.HousingException;
 import com.example.accountservice.common.security.jwt.JwtUtils;
 import com.example.accountservice.common.security.services.UserDetailsServiceImpl;
 import com.example.accountservice.common.security.services.UserPrincipal;
+import com.example.accountservice.common.web.Resource;
+import com.example.accountservice.common.web.ServiceClient;
 import com.example.accountservice.controllers.payload.request.LoginRequest;
+import com.example.accountservice.controllers.payload.request.ProductCreateRequest;
 import com.example.accountservice.controllers.payload.request.SignupRequest;
 import com.example.accountservice.controllers.payload.response.JwtResponse;
+import com.example.accountservice.controllers.payload.response.ProductResponse;
 import com.example.accountservice.infrastructure.models.RefreshToken;
 import com.example.accountservice.infrastructure.repository.AccountRepository;
 import com.example.accountservice.usecases.account.IAccountUseCase;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,12 +34,16 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
-public class AuthController {
+public class AuthController extends ServiceClient {
     private final UserDetailsServiceImpl userDetailsService;
     private final AccountRepository accountRepository;
     private final PasswordEncoder encoder;
     private final JwtUtils jwtUtils;
     private final IAccountUseCase accountUseCase;
+    @Value("${spring.service.product-service.carts.url}")
+    private String url;
+    @Value("${spring.service.product-service.basic-auth}")
+    private String basicAuth;
 
     @PostMapping("/signin")
     public BaseResponse<?> authenticateUser(@Valid @RequestBody LoginRequest request) {
@@ -60,7 +71,11 @@ public class AuthController {
         if (accountUseCase.existsByEmail(request.getEmail())) {
             return BaseResponse.ofFailed(HousingErrors.EMAIL_EXIST);
         }
-        return BaseResponse.ofSucceeded(accountUseCase.createUser(request));
+        var account = accountUseCase.createUser(request);
+
+        var resourceType = new ParameterizedTypeReference<Resource<String>>() {};
+        get(url, Resource.class, basicAuth);
+        return BaseResponse.ofSucceeded(account);
     }
 
     @PostMapping("/password")

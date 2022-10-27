@@ -26,8 +26,12 @@ spring:
             - name
   service:
     product-service:
-      url: http://localhost:8089/v1/products
-      basic-auth: Basic dXNlcjpwYXNzd29yZA==
+      basic-auth: dXNlcjpwYXNzd29yZA==
+      products:
+        url: http://localhost:8089/v1/products
+      cart:
+        url: http://localhost:8089/v1/carts
+
 
 bezkoder:
   app:
