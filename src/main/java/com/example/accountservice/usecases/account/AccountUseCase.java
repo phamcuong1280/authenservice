@@ -116,7 +116,7 @@ public class AccountUseCase extends ServiceClient implements IAccountUseCase{
         account.setUuid(UUID.randomUUID().toString());
         account = jpaAccountRepository.save(account);
 
-        get(url+"/"+ account.getUuid(), Resource.class, basicAuth);
+//        get(url+"/"+ account.getUuid(), Resource.class, basicAuth);
         var profile = new Profile();
         profile.setUuid(UUID.randomUUID().toString());
         profile.setEmail(request.getEmail());
