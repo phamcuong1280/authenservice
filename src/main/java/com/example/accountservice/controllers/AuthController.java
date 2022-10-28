@@ -9,6 +9,7 @@ import com.example.accountservice.common.security.services.UserDetailsServiceImp
 import com.example.accountservice.common.security.services.UserPrincipal;
 import com.example.accountservice.controllers.payload.request.LoginRequest;
 import com.example.accountservice.controllers.payload.request.SignupRequest;
+import com.example.accountservice.controllers.payload.response.JwtResponse;
 import com.example.accountservice.infrastructure.repository.JpaAccountRepository;
 import com.example.accountservice.usecases.account.IAccountUseCase;
 import com.example.accountservice.usecases.token.ITokenUseCase;
@@ -76,7 +77,7 @@ public class AuthController {
     }
 
     private BaseResponse<?> getBaseResponse(UserPrincipal userDetails) {
-        return BaseResponse.ofSucceeded(jwtUtils.createToken(userDetails));
+        return BaseResponse.ofSucceeded(new JwtResponse(jwtUtils.createToken(userDetails)));
     }
 
     @GetMapping("/token/{refreshToken}")
