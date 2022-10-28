@@ -23,8 +23,6 @@ public class AccountUseCase extends ServiceClient implements IAccountUseCase {
     private final JpaAccountRoleRepository jpaAccountRoleRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder encoder;
-    private final String url;
-    private final String basicAuth;
     private final AccountMapper accountMapper;
 
     @Override
