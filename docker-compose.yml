@@ -16,6 +16,11 @@ services:
     volumes:
       #      - ./init.sql:/docker-entrypoint-initdb.d/1.sql
       - ./database:/var/lib/mysql
+  redis-spring-boot:
+    image: redis:alpine
+    ports:
+      - 6380:6379
+    tty: true
 #    networks:
 #      - my_network
 #  account-service:

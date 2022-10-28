@@ -9,30 +9,27 @@ import com.example.accountservice.common.security.services.UserDetailsServiceImp
 import com.example.accountservice.common.security.services.UserPrincipal;
 import com.example.accountservice.controllers.payload.request.LoginRequest;
 import com.example.accountservice.controllers.payload.request.SignupRequest;
-import com.example.accountservice.controllers.payload.response.JwtResponse;
-import com.example.accountservice.infrastructure.models.RefreshToken;
 import com.example.accountservice.infrastructure.repository.JpaAccountRepository;
 import com.example.accountservice.usecases.account.IAccountUseCase;
+import com.example.accountservice.usecases.token.ITokenUseCase;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
-public class AuthController{
+public class AuthController {
     private final UserDetailsServiceImpl userDetailsService;
     private final JpaAccountRepository jpaAccountRepository;
     private final PasswordEncoder encoder;
     private final JwtUtils jwtUtils;
     private final IAccountUseCase accountUseCase;
+    private final ITokenUseCase tokenUseCase;
 
     @PostMapping("/signin")
     public BaseResponse<?> authenticateUser(@Valid @RequestBody LoginRequest request) {
@@ -62,8 +59,6 @@ public class AuthController{
         }
         var account = accountUseCase.createUser(request);
 
-
-
         return BaseResponse.ofSucceeded(account);
     }
 
@@ -71,7 +66,7 @@ public class AuthController{
     public BaseResponse<?> setPassword(@Valid @RequestBody LoginRequest request) {
         var account = jpaAccountRepository.findByEmailAndStatusIsTrue(request.getEmail()).orElseThrow(UserNotFound::new);
         account.setPassword(encoder.encode(request.getPassword()));
-        var current = jpaAccountRepository.save(account);
+        jpaAccountRepository.save(account);
         UserPrincipal userDetails = (UserPrincipal) userDetailsService.loadUserByUsername(request.getEmail());
         boolean matches = encoder.matches(request.getPassword(), userDetails.getPassword());
         if (!matches) {
@@ -81,19 +76,14 @@ public class AuthController{
     }
 
     private BaseResponse<?> getBaseResponse(UserPrincipal userDetails) {
-        String jwt = jwtUtils.createToken(userDetails);
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
-        RefreshToken refreshToken = accountUseCase.createRefreshToken(userDetails.getUuid());
-        return BaseResponse.ofSucceeded(new JwtResponse(jwt,
-                userDetails.getUuid(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles,
-                refreshToken.getRefreshToken()));
+        return BaseResponse.ofSucceeded(jwtUtils.createToken(userDetails));
     }
 
+    @GetMapping("/token/{refreshToken}")
+    public BaseResponse<?> test(@PathVariable String refreshToken) {
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return BaseResponse.ofSucceeded(tokenUseCase.getToken(userPrincipal.getUuid()));
+    }
 
     @GetMapping("/signout")
     public BaseResponse<?> logoutUser() {

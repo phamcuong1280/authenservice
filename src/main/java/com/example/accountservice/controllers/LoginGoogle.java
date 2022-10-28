@@ -49,6 +49,6 @@ public class LoginGoogle {
 
     @GetMapping("/login-with-google")
     RedirectView redirectWithRedirectAttributes() {
-        return new RedirectView("https://accounts.google.com/o/oauth2/auth?scope=profile email&redirect_uri=http://localhost:8088/login-google&response_type=code&client_id=85998077224-t35s1f5h11lvf1nkdbm448dselumfs5t.apps.googleusercontent.com&approval_prompt=force");
+        return new RedirectView("https://accounts.google.com/o/oauth2/auth?scope=profile email&redirect_uri=https://account-service-production.up.railway.app/login-google&response_type=code&client_id=85998077224-t35s1f5h11lvf1nkdbm448dselumfs5t.apps.googleusercontent.com&approval_prompt=force");
     }
 }
