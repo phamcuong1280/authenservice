@@ -13,19 +13,19 @@ import javax.persistence.Entity;
 public class Account extends BaseModel {
 
     private String uuid;
-    private String username;
+    private String name;
     private String email;
     private String password;
     private Boolean status = true;
 
-    public Account(String username, String email, String password) {
-        this.username = username;
+    public Account(String name, String email, String password) {
+        this.name = name;
         this.email = email;
         this.password = password;
     }
 
-    public Account(String username, String email) {
-        this.username = username;
+    public Account(String name, String email) {
+        this.name = name;
         this.email = email;
     }
 }

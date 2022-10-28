@@ -11,7 +11,7 @@ public class TokenUseCase implements ITokenUseCase {
 
     @Autowired
     private RedisTemplate<String, String> template;
-    private String key = "USER";
+    private final String key = "USER";
 
     @Override
     public boolean saveToken(RefreshToken refreshToken) {

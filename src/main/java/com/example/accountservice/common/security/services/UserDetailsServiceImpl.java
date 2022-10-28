@@ -45,7 +45,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         var accountRole = jpaAccountRoleRepository.findAllByAccountUuid(account.getUuid());
         var uuids = accountRole.stream().map(AccountRole::getRoleUuid).collect(Collectors.toList());
         List<Role> roles = jpaRoleRepository.findByUuidIn(uuids);
-        return new UserPrincipal(account.getUuid(), account.getUsername(), account.getEmail(), account.getPassword(),
+        return new UserPrincipal(account.getUuid(), account.getName(), account.getEmail(), account.getPassword(),
                 roles
                         .stream()
                         .map(u -> new SimpleGrantedAuthority(u.getRole())).collect(Collectors.toList()));

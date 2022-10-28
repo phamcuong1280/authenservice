@@ -1,7 +1,7 @@
 version: '3.0'
-#networks:
-#  my_network:
-#    driver: bridge
+networks:
+  my_network:
+    driver: bridge
 services:
   mysql:
     container_name: mysqldb
@@ -16,33 +16,48 @@ services:
     volumes:
       #      - ./init.sql:/docker-entrypoint-initdb.d/1.sql
       - ./database:/var/lib/mysql
-  redis-spring-boot:
-    image: redis:alpine
-    ports:
-      - 6380:6379
-    tty: true
+volumes:
+  mysql:
+    driver: local
+#version: '3.0'
+#networks:
+#  my_network:
+#    driver: bridge
+#services:
+#  mysql:
+#    container_name: mysqldb
+#    image: mysql:5.7
+#    restart: always
+#    ports:
+#      - "3308:3306"
+#    environment:
+#      MYSQL_DATABASE: "db_example"
+#      MYSQL_ROOT_PASSWORD: "123456789"
+#      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+#    volumes:
+##      - ./init.sql:/docker-entrypoint-initdb.d/1.sql
+#      - ./database:/var/lib/mysql
 #    networks:
 #      - my_network
 #  account-service:
 #    depends_on:
 #      - mysql
 #    container_name: account-service
-#    image: cuongpham11121998/account-service:v1.0.0
+#    image: account-service
+#    restart: always
 #    ports:
-#      - "8888:8088"
+#      - "8088:8080"
 #    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3308/db_example?autoReconnect=true&failOverReadOnly=false&maxReconnects=10
 #      MYSQL_ROOT_PASSWORD: 123456789
-#      MYSQL_PORT: mysql
 #      MYSQL_DATABASE: db_example
-#      MYSQL_USER: root
-#      MYSQL_PASSWORD: 123456789
-#    stdin_open: true
-#    tty: true
+#      SPRING_DATASOURCE_USERNAME: root
+#      SPRING_DATASOURCE_PASSWORD: 123456789
 #    networks:
 #      - my_network
 #    links:
 #      - mysql
-volumes:
-  mysql:
-    driver: local
-
+#volumes:
+#  mysql:
+#    driver: local
+#
