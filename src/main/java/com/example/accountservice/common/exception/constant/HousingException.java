@@ -14,6 +14,7 @@ public class HousingException extends RuntimeException {
     public HousingException(HousingBusinessError errorCode, String message) {
         super(message);
         this.errorCode = errorCode;
+        this.errorCode.setMessage(message);
     }
 
     public HousingException(HousingBusinessError error, String message, Throwable cause) {

@@ -2,10 +2,12 @@ package com.example.accountservice.common.exception.constant;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
+@Setter
 public class HousingBusinessError<T> {
     private int code;
     private String message;
