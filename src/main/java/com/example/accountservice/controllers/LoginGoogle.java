@@ -45,7 +45,7 @@ public class LoginGoogle {
         String accessToken = googleUtils.getToken(code);
         GooglePojo googlePojo = googleUtils.getUserInfo(accessToken);
         if (accountUseCase.existsByEmail(googlePojo.getEmail())) {
-            throw new AuthenticationException();
+            throw new AuthenticationException("Bro vui lòng đăng nhập bằng password !!!");
         }
         return BaseResponse.ofSucceeded(accountUseCase.loginWithGoogle(googlePojo));
     }
