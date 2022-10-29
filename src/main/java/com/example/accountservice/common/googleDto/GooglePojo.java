@@ -8,8 +8,6 @@ import java.util.UUID;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GooglePojo {
-
-    private String id;
     private String uuid = UUID.randomUUID().toString();
     private String email;
     private boolean verified_email;
@@ -23,7 +21,7 @@ public class GooglePojo {
     public String toString() {
         return
 
-                "GooglePojo [id=" + this.id + ", email=" + this.email + ", verified_email=" + this.verified_email + ", name="
+                "GooglePojo [email=" + this.email + ", verified_email=" + this.verified_email + ", name="
                         + this.name + ", given_name=" + this.given_name + ", family_name=" + this.family_name + "]";
     }
 }
