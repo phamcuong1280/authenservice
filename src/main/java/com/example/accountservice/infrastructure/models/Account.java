@@ -1,5 +1,6 @@
 package com.example.accountservice.infrastructure.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Account extends BaseModel {
     @Column(unique = true)
     private String uuid;
