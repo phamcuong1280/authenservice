@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
@@ -11,9 +12,10 @@ import javax.persistence.Entity;
 @Setter
 @NoArgsConstructor
 public class Account extends BaseModel {
-
+    @Column(unique = true)
     private String uuid;
     private String name;
+    @Column(unique = true)
     private String email;
     private String password;
     private String validCode;
