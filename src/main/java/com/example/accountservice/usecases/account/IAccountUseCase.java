@@ -14,5 +14,8 @@ public interface IAccountUseCase {
 
     Boolean existsByEmail(String email);
 
+    Account update(Account account);
+
+    Account get(String email);
 
 }

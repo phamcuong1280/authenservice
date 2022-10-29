@@ -43,6 +43,16 @@ spring:
         - 127.0.0.1:6379
         - 127.0.0.2:6379
         - 127.0.0.3:6379
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    password: aupseiyajgbrhsjy
+    username: project.service.1.1.0.@gmail.com
+    protocol: smtp
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+      ssl.trust: smtp.gmail.com
 
 bezkoder:
   app:

@@ -1,4 +1,4 @@
-package com.example.accountservice.common.security;
+package com.example.accountservice.common.config;
 
 import com.example.accountservice.common.security.jwt.AuthEntryPointJwt;
 import com.example.accountservice.common.security.jwt.AuthTokenFilter;
@@ -68,6 +68,7 @@ public class WebSecurityConfig {
                 .antMatchers("/swagger-ui.html").permitAll()
                 .antMatchers("/configuration/**").permitAll()
                 .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/password/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()

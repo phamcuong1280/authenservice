@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.security.sasl.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -43,6 +44,9 @@ public class LoginGoogle {
         }
         String accessToken = googleUtils.getToken(code);
         GooglePojo googlePojo = googleUtils.getUserInfo(accessToken);
+        if (accountUseCase.existsByEmail(googlePojo.getEmail())) {
+            throw new AuthenticationException();
+        }
         return BaseResponse.ofSucceeded(accountUseCase.loginWithGoogle(googlePojo));
     }
 

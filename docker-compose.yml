@@ -1,7 +1,4 @@
 version: '3.0'
-networks:
-  my_network:
-    driver: bridge
 services:
   mysql:
     container_name: mysqldb

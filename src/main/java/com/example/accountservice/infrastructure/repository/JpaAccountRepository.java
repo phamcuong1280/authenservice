@@ -33,4 +33,9 @@ public interface JpaAccountRepository extends JpaRepository<Account, Long> {
     @Async
     @Query(value = "UPDATE Account set status = true where uuid = ?1")
     void login(String uuid);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE Account set password = ?1 where email = ?2")
+    void update(String password, String email);
 }

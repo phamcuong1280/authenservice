@@ -76,6 +76,8 @@ public class AuthController {
         return getBaseResponse(userDetails);
     }
 
+
+
     private BaseResponse<?> getBaseResponse(UserPrincipal userDetails) {
         return BaseResponse.ofSucceeded(new JwtResponse(jwtUtils.createToken(userDetails)));
     }

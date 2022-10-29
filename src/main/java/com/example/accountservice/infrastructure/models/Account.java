@@ -16,6 +16,7 @@ public class Account extends BaseModel {
     private String name;
     private String email;
     private String password;
+    private String validCode;
     private Boolean status = true;
 
     public Account(String name, String email, String password) {

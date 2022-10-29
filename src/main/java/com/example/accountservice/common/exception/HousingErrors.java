@@ -7,7 +7,8 @@ import org.springframework.http.HttpStatus;
 public class HousingErrors {
     public static final HousingBusinessError USER_NOT_FOUND = new HousingBusinessError(400004, "USER_NOT_FOUND", HttpStatus.BAD_REQUEST);
     public static final HousingBusinessError EMAIL_EXIST = new HousingBusinessError(400005, "EMAIL IS EXIST", HttpStatus.BAD_REQUEST);
-    ;
+    public static final HousingBusinessError VALID_CODE_INCORRECT = new HousingBusinessError(400006, "VALID_CODE_INCORRECT", HttpStatus.BAD_REQUEST);
+
     /**
      * 400
      */

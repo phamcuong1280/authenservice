@@ -27,11 +27,6 @@ public class AccountUseCase extends ServiceClient implements IAccountUseCase {
 
     @Override
     public Account loginWithGoogle(GooglePojo googlePojo) {
-        var current = jpaAccountRepository.findByEmail(googlePojo.getEmail());
-        if (current.isPresent()){
-            throw new AuthenticationException();
-        }
-
         var account = jpaAccountRepository.save(accountMapper.from(googlePojo));
         jpaProfileRepository.save(accountMapper.from(account, googlePojo));
 
@@ -73,5 +68,16 @@ public class AccountUseCase extends ServiceClient implements IAccountUseCase {
     @Override
     public Boolean existsByEmail(String email) {
         return jpaAccountRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Account update(Account account) {
+        jpaAccountRepository.update(account.getPassword(), account.getEmail());
+        return get(account.getEmail());
+    }
+
+    @Override
+    public Account get(String email) {
+        return jpaAccountRepository.findByEmail(email).orElse(null);
     }
 }
