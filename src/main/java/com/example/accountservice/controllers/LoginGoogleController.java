@@ -10,6 +10,7 @@ import com.example.accountservice.controllers.mapper.AuthControllerMapper;
 import com.example.accountservice.infrastructure.repository.JpaAccountRepository;
 import com.example.accountservice.usecases.account.IAccountUseCase;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,7 +26,8 @@ import java.io.IOException;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @AllArgsConstructor
-public class LoginGoogle {
+@Slf4j
+public class LoginGoogleController {
     private final IAccountUseCase accountUseCase;
     private final AuthControllerMapper mapper;
     private AuthenticationManager authenticationManager;
@@ -44,6 +46,7 @@ public class LoginGoogle {
         }
         String accessToken = googleUtils.getToken(code);
         GooglePojo googlePojo = googleUtils.getUserInfo(accessToken);
+        log.info("[LoginGoogleController][loginGoogle]: google pojo - " + googlePojo);
         if (accountUseCase.existsByEmail(googlePojo.getEmail())) {
             throw new AuthenticationException("Bro vui lòng đăng nhập bằng password !!!");
         }
