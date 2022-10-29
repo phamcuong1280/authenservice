@@ -1,6 +1,7 @@
 package com.example.accountservice.controllers;
 
 import com.example.accountservice.common.config.rest.BaseResponse;
+import com.example.accountservice.common.exception.AuthenticationException;
 import com.example.accountservice.common.exception.HousingErrors;
 import com.example.accountservice.common.googleDto.GooglePojo;
 import com.example.accountservice.common.googleDto.GoogleUtils;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.security.sasl.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
