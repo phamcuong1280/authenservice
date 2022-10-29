@@ -2,6 +2,7 @@ package com.example.accountservice.common.googleDto;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Slf4j
 public class GoogleUtils {
 
     @Autowired
@@ -46,6 +48,7 @@ public class GoogleUtils {
     public GooglePojo getUserInfo(final String accessToken) throws IOException {
         String link = env.getProperty("google.link.get.user_info") + accessToken;
         String response = Request.Get(link).execute().returnContent().asString();
+        log.info("[GoogleUtils][getUserInfo] response: " + response);
         ObjectMapper mapper = new ObjectMapper();
 
         return mapper.readValue(response, GooglePojo.class);
