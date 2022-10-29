@@ -27,7 +27,7 @@ public class EmailSenderService {
         MimeMessage mailMessage = mailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(mailMessage);
 
-        messageHelper.setFrom("project.service.1.1.0.@gmail.com","account-service.app");
+        messageHelper.setFrom("project.service.1.1.0@gmail.com","account-service.app");
         messageHelper.setTo(account.getEmail());
 
         String subject = "[Account-Service]: Bro quên pass hả ?";
