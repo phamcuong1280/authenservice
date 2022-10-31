@@ -1,18 +1,18 @@
 package com.example.accountservice.controllers;
 
 import com.example.accountservice.common.config.rest.BaseResponse;
-import com.example.accountservice.common.exception.AuthenticationException;
 import com.example.accountservice.common.exception.HousingErrors;
 import com.example.accountservice.common.googleDto.GooglePojo;
 import com.example.accountservice.common.googleDto.GoogleUtils;
 import com.example.accountservice.common.security.jwt.JwtUtils;
+import com.example.accountservice.common.security.services.UserDetailsServiceImpl;
+import com.example.accountservice.common.security.services.UserPrincipal;
 import com.example.accountservice.controllers.mapper.AuthControllerMapper;
-import com.example.accountservice.infrastructure.repository.JpaAccountRepository;
+import com.example.accountservice.controllers.payload.response.JwtResponse;
+import com.example.accountservice.infrastructure.models.TypeAccount;
 import com.example.accountservice.usecases.account.IAccountUseCase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,11 +29,9 @@ import java.io.IOException;
 @Slf4j
 public class LoginGoogleController {
     private final IAccountUseCase accountUseCase;
+    private final UserDetailsServiceImpl userDetailsService;
     private final AuthControllerMapper mapper;
-    private AuthenticationManager authenticationManager;
-    private JpaAccountRepository jpaAccountRepository;
     private PasswordEncoder encoder;
-    private UserDetailsService service;
     private JwtUtils jwtUtils;
     private GoogleUtils googleUtils;
 
@@ -47,8 +45,10 @@ public class LoginGoogleController {
         String accessToken = googleUtils.getToken(code);
         GooglePojo googlePojo = googleUtils.getUserInfo(accessToken);
         log.info("[LoginGoogleController][loginGoogle]: google pojo - " + googlePojo);
-        if (accountUseCase.existsByEmail(googlePojo.getEmail())) {
-            throw new AuthenticationException("Bro vui lòng đăng nhập bằng password !!!");
+        var account = accountUseCase.get(googlePojo.getEmail());
+        if (account != null && account.getType().equals(TypeAccount.google)) {
+            UserPrincipal userDetails = (UserPrincipal) userDetailsService.loadUserByUsername(account.getEmail());
+            return BaseResponse.ofSucceeded(new JwtResponse(jwtUtils.createToken(userDetails)));
         }
         return BaseResponse.ofSucceeded(accountUseCase.loginWithGoogle(googlePojo));
     }

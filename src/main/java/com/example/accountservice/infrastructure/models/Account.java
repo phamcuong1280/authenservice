@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Entity
 @Getter
@@ -22,6 +24,8 @@ public class Account extends BaseModel {
     private String password;
     private String validCode;
     private Boolean status = true;
+
+    private String type;
 
     public Account(String name, String email, String password) {
         this.name = name;

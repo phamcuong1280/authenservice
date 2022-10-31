@@ -1,10 +1,7 @@
 package com.example.accountservice.usecases.account;
 
-import com.example.accountservice.common.exception.AuthenticationException;
-import com.example.accountservice.common.exception.UserNotFound;
 import com.example.accountservice.common.googleDto.GooglePojo;
 import com.example.accountservice.common.web.ServiceClient;
-import com.example.accountservice.controllers.payload.request.LoginRequest;
 import com.example.accountservice.controllers.payload.request.SignupRequest;
 import com.example.accountservice.infrastructure.models.*;
 import com.example.accountservice.infrastructure.repository.*;
