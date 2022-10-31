@@ -1,12 +1,8 @@
 package com.example.accountservice.controllers;
 
 import com.example.accountservice.common.config.rest.BaseResponse;
-import com.example.accountservice.common.exception.HousingErrors;
 import com.example.accountservice.common.exception.UserNotFound;
 import com.example.accountservice.common.exception.ValidCodeIncorrectException;
-import com.example.accountservice.common.exception.constant.HousingException;
-import com.example.accountservice.common.security.services.UserPrincipal;
-import com.example.accountservice.controllers.payload.request.LoginRequest;
 import com.example.accountservice.controllers.payload.request.RecoverPasswordReq;
 import com.example.accountservice.usecases.account.EmailSenderService;
 import com.example.accountservice.usecases.account.IAccountUseCase;
@@ -28,8 +24,9 @@ public class PasswordController {
     private final IAccountUseCase accountUseCase;
     private final EmailSenderService emailSenderService;
     private final PasswordEncoder encoder;
+
     @GetMapping("/{email}")
-    public BaseResponse<?> forgetPassword(@PathVariable String email ) throws MessagingException, UnsupportedEncodingException {
+    public BaseResponse<?> forgetPassword(@PathVariable String email) throws MessagingException, UnsupportedEncodingException {
         var account = accountUseCase.get(email);
         if (account == null) {
             throw new UserNotFound();
@@ -44,7 +41,7 @@ public class PasswordController {
         if (account == null) {
             throw new UserNotFound();
         }
-        if (!Objects.equals(request.getValidCode(), account.getValidCode())){
+        if (!Objects.equals(request.getValidCode(), account.getValidCode())) {
             throw new ValidCodeIncorrectException();
         }
         account.setPassword(encoder.encode(request.getPassword()));
