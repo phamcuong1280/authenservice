@@ -50,7 +50,7 @@ public class LoginGoogleController {
             UserPrincipal userDetails = (UserPrincipal) userDetailsService.loadUserByUsername(account.getEmail());
             return BaseResponse.ofSucceeded(new JwtResponse(jwtUtils.createToken(userDetails)));
         }
-        return BaseResponse.ofSucceeded(accountUseCase.loginWithGoogle(googlePojo));
+        return BaseResponse.ofSucceeded(mapper.from(accountUseCase.loginWithGoogle(googlePojo)));
     }
 
 

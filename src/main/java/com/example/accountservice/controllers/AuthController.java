@@ -7,6 +7,7 @@ import com.example.accountservice.common.exception.constant.HousingException;
 import com.example.accountservice.common.security.jwt.JwtUtils;
 import com.example.accountservice.common.security.services.UserDetailsServiceImpl;
 import com.example.accountservice.common.security.services.UserPrincipal;
+import com.example.accountservice.controllers.mapper.AuthControllerMapper;
 import com.example.accountservice.controllers.payload.request.LoginRequest;
 import com.example.accountservice.controllers.payload.request.SignupRequest;
 import com.example.accountservice.controllers.payload.response.JwtResponse;
@@ -31,6 +32,7 @@ public class AuthController {
     private final JwtUtils jwtUtils;
     private final IAccountUseCase accountUseCase;
     private final ITokenUseCase tokenUseCase;
+    private final AuthControllerMapper mapper;
 
     @PostMapping("/signin")
     public BaseResponse<?> authenticateUser(@Valid @RequestBody LoginRequest request) {
@@ -58,9 +60,7 @@ public class AuthController {
         if (accountUseCase.existsByEmail(request.getEmail())) {
             return BaseResponse.ofFailed(HousingErrors.EMAIL_EXIST);
         }
-        var account = accountUseCase.createUser(request);
-
-        return BaseResponse.ofSucceeded(account);
+        return BaseResponse.ofSucceeded(mapper.from(accountUseCase.createUser(request)));
     }
 
     @PostMapping("/password")
