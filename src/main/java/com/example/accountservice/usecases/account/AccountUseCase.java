@@ -1,10 +1,7 @@
 package com.example.accountservice.usecases.account;
 
-import com.example.accountservice.common.exception.AuthenticationException;
-import com.example.accountservice.common.exception.UserNotFound;
 import com.example.accountservice.common.googleDto.GooglePojo;
 import com.example.accountservice.common.web.ServiceClient;
-import com.example.accountservice.controllers.payload.request.LoginRequest;
 import com.example.accountservice.controllers.payload.request.SignupRequest;
 import com.example.accountservice.infrastructure.models.*;
 import com.example.accountservice.infrastructure.repository.*;
@@ -31,7 +28,9 @@ public class AccountUseCase extends ServiceClient implements IAccountUseCase {
         jpaProfileRepository.save(accountMapper.from(account, googlePojo));
 
         Role role = jpaRoleRepository.findByRole(ERole.ROLE_USER).orElse(null);
-        assert role != null;
+        if (role == null) {
+           role = jpaRoleRepository.save(new Role(UUID.randomUUID().toString(), ERole.ROLE_USER));
+        }
         AccountRole accountRole = new AccountRole(account.getUuid(), role.getUuid());
         jpaAccountRoleRepository.save(accountRole);
         return account;
@@ -50,6 +49,9 @@ public class AccountUseCase extends ServiceClient implements IAccountUseCase {
         var account = accountMapper.from(request);
         account.setPassword(encoder.encode(request.getPassword()));
         Role role = jpaRoleRepository.findByRole(ERole.ROLE_USER).orElse(null);
+        if (role == null) {
+            role = jpaRoleRepository.save(new Role(UUID.randomUUID().toString(), ERole.ROLE_USER));
+        }
         account = jpaAccountRepository.save(account);
 
 //        get(url+"/"+ account.getUuid(), Resource.class, basicAuth);
@@ -59,7 +61,6 @@ public class AccountUseCase extends ServiceClient implements IAccountUseCase {
         profile.setAccountUuid(account.getUuid());
         jpaProfileRepository.save(profile);
 
-        assert role != null;
         var accountRole = new AccountRole(account.getUuid(), role.getUuid());
         jpaAccountRoleRepository.save(accountRole);
         return account;

@@ -1,5 +1,6 @@
 package com.example.accountservice.common.googleDto;
 
+import com.example.accountservice.infrastructure.models.TypeAccount;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -17,7 +18,7 @@ public class GooglePojo {
     private String link;
     private String picture;
     private String locale;
-
+    private String type = TypeAccount.google;
     public String toString() {
         return
 

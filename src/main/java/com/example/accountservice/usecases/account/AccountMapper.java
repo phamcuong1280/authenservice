@@ -4,13 +4,16 @@ import com.example.accountservice.common.googleDto.GooglePojo;
 import com.example.accountservice.controllers.payload.request.SignupRequest;
 import com.example.accountservice.infrastructure.models.Account;
 import com.example.accountservice.infrastructure.models.Profile;
+import com.example.accountservice.infrastructure.models.TypeAccount;
 import org.mapstruct.Mapper;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.mapstruct.Mapping;
 
 import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public interface AccountMapper {
+
+    @Mapping(target = "type", defaultValue = "google")
     Account from(GooglePojo googlePojo);
 
     default Account from(SignupRequest request){
@@ -18,6 +21,7 @@ public interface AccountMapper {
         account.setUuid(UUID.randomUUID().toString());
         account.setEmail(request.getEmail());
         account.setName(request.getUserName());
+        account.setType(TypeAccount.local);
         return account;
     }
 

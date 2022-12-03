@@ -3,6 +3,7 @@ package com.example.accountservice.controllers;
 import com.example.accountservice.common.config.rest.BaseResponse;
 import com.example.accountservice.common.security.services.UserPrincipal;
 import com.example.accountservice.common.web.ServiceClient;
+import com.example.accountservice.controllers.payload.request.TestDto;
 import com.example.accountservice.infrastructure.models.Product;
 import com.example.accountservice.infrastructure.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import javax.validation.Valid;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -35,6 +38,11 @@ public class TestController extends ServiceClient {
     @GetMapping("/all")
     public String allAccess() {
         return "Public URL";
+    }
+
+    @PostMapping("/all")
+    public BaseResponse<?> test(@Valid @RequestBody TestDto testDto) {
+        return BaseResponse.ofSucceeded(testDto);
     }
 
     @GetMapping("/user")
