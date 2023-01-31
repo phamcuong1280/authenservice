@@ -66,14 +66,8 @@ public class MetaResource {
                 Object this$pages = this.getPages();
                 Object other$pages = other.getPages();
                 if (this$pages == null) {
-                    if (other$pages != null) {
-                        return false;
-                    }
-                } else if (!this$pages.equals(other$pages)) {
-                    return false;
-                }
-
-                return true;
+                    return other$pages == null;
+                } else return this$pages.equals(other$pages);
             }
         }
     }

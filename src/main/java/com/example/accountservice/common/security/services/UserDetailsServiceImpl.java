@@ -1,6 +1,6 @@
 package com.example.accountservice.common.security.services;
 
-import com.example.accountservice.common.exception.AuthenticationException;
+import com.example.accountservice.common.exception.AuthenticationExceptionCustom;
 import com.example.accountservice.infrastructure.models.Account;
 import com.example.accountservice.infrastructure.models.AccountRole;
 import com.example.accountservice.infrastructure.models.Role;
@@ -37,7 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public UserDetails loadUserByEmail(String username) throws UsernameNotFoundException {
         Account account = jpaAccountRepository.findByEmailAndStatusIsTrue(username)
-                .orElseThrow(AuthenticationException::new);
+                .orElseThrow(AuthenticationExceptionCustom::new);
         return getUserDetails(account);
     }
 

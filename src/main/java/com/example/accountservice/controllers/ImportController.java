@@ -1,8 +1,8 @@
 package com.example.accountservice.controllers;
 
-import com.example.accountservice.common.config.rest.BaseResponse;
 import com.example.accountservice.usecases.imports.IImportFileUseCase;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,9 +16,9 @@ public class ImportController {
     private final IImportFileUseCase importFileUseCase;
 
     @PostMapping
-    public BaseResponse<?> importFile(MultipartFile file) {
+    public ResponseEntity<?> importFile(MultipartFile file) {
         importFileUseCase.importFile(file);
-        return BaseResponse.ofSucceeded();
+        return ResponseEntity.ok(200);
     }
 
 

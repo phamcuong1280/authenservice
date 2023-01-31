@@ -1,12 +1,12 @@
 package com.example.accountservice.common.security.jwt;
 
-import com.example.accountservice.common.config.rest.BaseResponse;
-import com.example.accountservice.common.exception.HousingErrors;
-import com.example.accountservice.common.exception.constant.HousingException;
+import com.example.accountservice.common.exception.MyErrors;
+import com.example.accountservice.common.exception.constant.ExceptionCustom;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -29,14 +29,9 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
-//    final Map<String, Object> body = new HashMap<>();
-//    body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
-//    body.put("error", "Unauthorized");
-//    body.put("message", authException.getMessage());
-//    body.put("path", request.getServletPath());
         final ObjectMapper mapper = new ObjectMapper();
 
-        mapper.writeValue(response.getOutputStream(), BaseResponse.ofFailed(new HousingException(HousingErrors.USER_NOT_UNAUTHORIZED)));
+        mapper.writeValue(response.getOutputStream(), ResponseEntity.badRequest().body(new ExceptionCustom(MyErrors.USER_NOT_UNAUTHORIZED)));
 
     }
 

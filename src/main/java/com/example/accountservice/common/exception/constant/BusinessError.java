@@ -8,19 +8,19 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 @Setter
-public class HousingBusinessError<T> {
+public class BusinessError<T> {
     private int code;
     private String message;
     private HttpStatus httpStatus;
     private T errorData;
 
-    public HousingBusinessError(String resource) {
+    public BusinessError(String resource) {
         this.code = 404;
         this.message = resource + " is not found";
         this.httpStatus = HttpStatus.NOT_FOUND;
     }
 
-    public HousingBusinessError(int code, String message, HttpStatus httpStatus) {
+    public BusinessError(int code, String message, HttpStatus httpStatus) {
         this.code = code;
         this.message = message;
         this.httpStatus = httpStatus;

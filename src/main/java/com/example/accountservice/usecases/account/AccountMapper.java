@@ -16,7 +16,7 @@ public interface AccountMapper {
     @Mapping(target = "type", defaultValue = "google")
     Account from(GooglePojo googlePojo);
 
-    default Account from(SignupRequest request){
+    default Account from(SignupRequest request) {
         var account = new Account();
         account.setUuid(UUID.randomUUID().toString());
         account.setEmail(request.getEmail());

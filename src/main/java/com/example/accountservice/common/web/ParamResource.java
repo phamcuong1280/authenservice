@@ -77,14 +77,8 @@ public class ParamResource {
                 Object this$limit = this.getLimit();
                 Object other$limit = other.getLimit();
                 if (this$limit == null) {
-                    if (other$limit != null) {
-                        return false;
-                    }
-                } else if (!this$limit.equals(other$limit)) {
-                    return false;
-                }
-
-                return true;
+                    return other$limit == null;
+                } else return this$limit.equals(other$limit);
             }
         }
     }

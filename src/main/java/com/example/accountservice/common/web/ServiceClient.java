@@ -1,8 +1,8 @@
 package com.example.accountservice.common.web;
 
-import com.example.accountservice.common.exception.HousingErrors;
-import com.example.accountservice.common.exception.constant.HousingBusinessError;
-import com.example.accountservice.common.exception.constant.HousingException;
+import com.example.accountservice.common.exception.MyErrors;
+import com.example.accountservice.common.exception.constant.BusinessError;
+import com.example.accountservice.common.exception.constant.ExceptionCustom;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,13 +43,13 @@ public abstract class ServiceClient {
                                     return response.bodyToMono(responseType).map(resp -> {
                                         if (Objects.nonNull(resp.getMeta())) {
                                             var status = response.statusCode();
-                                            throw new HousingException(new HousingBusinessError(
+                                            throw new ExceptionCustom(new BusinessError(
                                                     resp.getMeta().getCode(),
                                                     resp.getMeta().getMessage(),
                                                     status
                                             ));
                                         }
-                                        throw new HousingException(new HousingBusinessError(resp.getMeta().getCode(), resp.getMeta().getMessage(), response.statusCode()));
+                                        throw new ExceptionCustom(new BusinessError(resp.getMeta().getCode(), resp.getMeta().getMessage(), response.statusCode()));
                                     });
                                 }
                         )
@@ -57,7 +57,7 @@ public abstract class ServiceClient {
 
         var resp = monoResp.block();
         if (resp == null || resp.getData() == null) {
-            throw new HousingException(new HousingBusinessError(HousingErrors.INTERNAL_SERVER_ERROR.getCode(), String.format("%s call get %s then get exception: unknown", ServiceName(), uri), HttpStatus.INTERNAL_SERVER_ERROR));
+            throw new ExceptionCustom(new BusinessError(MyErrors.INTERNAL_SERVER_ERROR.getCode(), String.format("%s call get %s then get exception: unknown", ServiceName(), uri), HttpStatus.INTERNAL_SERVER_ERROR));
         }
         return resp.getData();
     }
@@ -78,13 +78,13 @@ public abstract class ServiceClient {
                                     return response.bodyToMono(responseType).map(resp -> {
                                         if (Objects.nonNull(resp.getMeta())) {
                                             var status = response.statusCode();
-                                            throw new HousingException(new HousingBusinessError(
+                                            throw new ExceptionCustom(new BusinessError(
                                                     resp.getMeta().getCode(),
                                                     resp.getMeta().getMessage(),
                                                     status
                                             ));
                                         }
-                                        throw new HousingException(new HousingBusinessError(resp.getMeta().getCode(), resp.getMeta().getMessage(), response.statusCode()));
+                                        throw new ExceptionCustom(new BusinessError(resp.getMeta().getCode(), resp.getMeta().getMessage(), response.statusCode()));
                                     });
                                 }
                         )
@@ -92,7 +92,7 @@ public abstract class ServiceClient {
 
         var resp = monoResp.block();
         if (resp == null || resp.getData() == null) {
-            throw new HousingException(new HousingBusinessError(HousingErrors.INTERNAL_SERVER_ERROR.getCode(), String.format("%s call post %s then get exception: unknown", ServiceName(), uri), HttpStatus.INTERNAL_SERVER_ERROR));
+            throw new ExceptionCustom(new BusinessError(MyErrors.INTERNAL_SERVER_ERROR.getCode(), String.format("%s call post %s then get exception: unknown", ServiceName(), uri), HttpStatus.INTERNAL_SERVER_ERROR));
         }
         return resp.getData();
     }
@@ -112,13 +112,13 @@ public abstract class ServiceClient {
                             return response.bodyToMono(responseType).map(resp -> {
                                 if (Objects.nonNull(resp.getMeta())) {
                                     var status = response.statusCode();
-                                    throw new HousingException(new HousingBusinessError(
+                                    throw new ExceptionCustom(new BusinessError(
                                             resp.getMeta().getCode(),
                                             resp.getMeta().getMessage(),
                                             status
                                     ));
                                 }
-                                throw new HousingException(new HousingBusinessError(resp.getMeta().getCode(), resp.getMeta().getMessage(), response.statusCode()));
+                                throw new ExceptionCustom(new BusinessError(resp.getMeta().getCode(), resp.getMeta().getMessage(), response.statusCode()));
                             });
                         }
                 )
@@ -126,7 +126,7 @@ public abstract class ServiceClient {
 
         var resp = monoResp.block();
         if (resp == null || resp.getData() == null) {
-            throw new HousingException(new HousingBusinessError(HousingErrors.INTERNAL_SERVER_ERROR.getCode(), String.format("%s call post %s then get exception: unknown", ServiceName(), uri), HttpStatus.INTERNAL_SERVER_ERROR));
+            throw new ExceptionCustom(new BusinessError(MyErrors.INTERNAL_SERVER_ERROR.getCode(), String.format("%s call post %s then get exception: unknown", ServiceName(), uri), HttpStatus.INTERNAL_SERVER_ERROR));
         }
         return resp.getData();
     }
@@ -145,13 +145,13 @@ public abstract class ServiceClient {
                                         if (Objects.nonNull(resp.getMeta())) {
                                             resp.getMeta().getCode();
                                             var status = response.statusCode();
-                                            throw new HousingException(new HousingBusinessError(
+                                            throw new ExceptionCustom(new BusinessError(
                                                     resp.getMeta().getCode(),
                                                     resp.getMeta().getMessage(),
                                                     status
                                             ));
                                         }
-                                        throw new HousingException(new HousingBusinessError(resp.getMeta().getCode(), resp.getMeta().getMessage(), response.statusCode()));
+                                        throw new ExceptionCustom(new BusinessError(resp.getMeta().getCode(), resp.getMeta().getMessage(), response.statusCode()));
                                     });
                                 }
                         )
@@ -159,7 +159,7 @@ public abstract class ServiceClient {
 
         var resp = monoResp.block();
         if (resp == null || resp.getData() == null) {
-            throw new HousingException(new HousingBusinessError(HousingErrors.INTERNAL_SERVER_ERROR.getCode(), String.format("%s call delete %s then get exception: unknown", ServiceName(), uri), HttpStatus.INTERNAL_SERVER_ERROR));
+            throw new ExceptionCustom(new BusinessError(MyErrors.INTERNAL_SERVER_ERROR.getCode(), String.format("%s call delete %s then get exception: unknown", ServiceName(), uri), HttpStatus.INTERNAL_SERVER_ERROR));
         }
         return resp.getData();
     }

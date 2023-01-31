@@ -1,12 +1,12 @@
 package com.example.accountservice.controllers;
 
-import com.example.accountservice.common.config.rest.BaseResponse;
 import com.example.accountservice.common.security.services.UserPrincipal;
 import com.example.accountservice.common.web.ServiceClient;
 import com.example.accountservice.controllers.payload.request.TestDto;
 import com.example.accountservice.infrastructure.models.Product;
 import com.example.accountservice.infrastructure.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -41,22 +41,22 @@ public class TestController extends ServiceClient {
     }
 
     @PostMapping("/all")
-    public BaseResponse<?> test(@Valid @RequestBody TestDto testDto) {
-        return BaseResponse.ofSucceeded(testDto);
+    public ResponseEntity<?> test(@Valid @RequestBody TestDto testDto) {
+        return ResponseEntity.ok(testDto);
     }
 
     @GetMapping("/user")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public BaseResponse<?> userAccess() {
+    public ResponseEntity<?> userAccess() {
         var user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return BaseResponse.ofSucceeded(user);
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/products")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public BaseResponse<?> createProduct(@RequestBody Product product) {
+    public ResponseEntity<?> createProduct(@RequestBody Product product) {
         var user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return BaseResponse.ofSucceeded(jpaProductRepository.save(product));
+        return ResponseEntity.ok(jpaProductRepository.save(product));
     }
 
     @GetMapping("/mod")

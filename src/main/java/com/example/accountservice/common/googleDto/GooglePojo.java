@@ -19,6 +19,7 @@ public class GooglePojo {
     private String picture;
     private String locale;
     private String type = TypeAccount.google;
+
     public String toString() {
         return
 

@@ -1,7 +1,6 @@
 package com.example.accountservice.controllers;
 
-import com.example.accountservice.common.config.rest.BaseResponse;
-import com.example.accountservice.common.exception.HousingErrors;
+import com.example.accountservice.common.exception.MyErrors;
 import com.example.accountservice.common.googleDto.GooglePojo;
 import com.example.accountservice.common.googleDto.GoogleUtils;
 import com.example.accountservice.common.security.jwt.JwtUtils;
@@ -13,6 +12,7 @@ import com.example.accountservice.infrastructure.models.TypeAccount;
 import com.example.accountservice.usecases.account.IAccountUseCase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,11 +36,11 @@ public class LoginGoogleController {
     private GoogleUtils googleUtils;
 
     @RequestMapping("/login-google")
-    public BaseResponse<?> loginGoogle(HttpServletRequest request) throws IOException {
+    public ResponseEntity<?> loginGoogle(HttpServletRequest request) throws IOException {
         String code = request.getParameter("code");
 
         if (code == null || code.isEmpty()) {
-            return BaseResponse.ofFailed(HousingErrors.BAD_GATEWAY);
+            return ResponseEntity.badRequest().body(MyErrors.BAD_GATEWAY);
         }
         String accessToken = googleUtils.getToken(code);
         GooglePojo googlePojo = googleUtils.getUserInfo(accessToken);
@@ -48,9 +48,9 @@ public class LoginGoogleController {
         var account = accountUseCase.get(googlePojo.getEmail());
         if (account != null && account.getType().equals(TypeAccount.google)) {
             UserPrincipal userDetails = (UserPrincipal) userDetailsService.loadUserByUsername(account.getEmail());
-            return BaseResponse.ofSucceeded(new JwtResponse(jwtUtils.createToken(userDetails)));
+            return ResponseEntity.ok(new JwtResponse(jwtUtils.createToken(userDetails)));
         }
-        return BaseResponse.ofSucceeded(mapper.from(accountUseCase.loginWithGoogle(googlePojo)));
+        return ResponseEntity.ok(mapper.from(accountUseCase.loginWithGoogle(googlePojo)));
     }
 
 

@@ -1,20 +1,20 @@
 package com.example.accountservice.common.exception;
 
 
-import com.example.accountservice.common.exception.constant.HousingBusinessError;
-import com.example.accountservice.common.exception.constant.HousingException;
+import com.example.accountservice.common.exception.constant.BusinessError;
+import com.example.accountservice.common.exception.constant.ExceptionCustom;
 
-public class UserNotFound extends HousingException {
+public class UserNotFound extends ExceptionCustom {
 
     public UserNotFound() {
-        super(HousingErrors.USER_NOT_FOUND);
+        super(MyErrors.USER_NOT_FOUND);
     }
 
     public UserNotFound(String message) {
-        super(HousingErrors.USER_NOT_FOUND, message);
+        super(MyErrors.USER_NOT_FOUND, message);
     }
 
-    public UserNotFound(HousingBusinessError error, String message, Throwable cause) {
+    public UserNotFound(BusinessError error, String message, Throwable cause) {
         super(error, message, cause);
     }
 }

@@ -29,7 +29,7 @@ public class AccountUseCase extends ServiceClient implements IAccountUseCase {
 
         Role role = jpaRoleRepository.findByRole(ERole.ROLE_USER).orElse(null);
         if (role == null) {
-           role = jpaRoleRepository.save(new Role(UUID.randomUUID().toString(), ERole.ROLE_USER));
+            role = jpaRoleRepository.save(new Role(UUID.randomUUID().toString(), ERole.ROLE_USER));
         }
         AccountRole accountRole = new AccountRole(account.getUuid(), role.getUuid());
         jpaAccountRoleRepository.save(accountRole);

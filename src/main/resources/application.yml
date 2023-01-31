@@ -3,8 +3,8 @@ spring:
     name: account-service
   datasource:
     url: jdbc:mysql://${MYSQLUSER:root}:${MYSQLPASSWORD:123456789}@${MYSQLHOST:localhost}:${MYSQLPORT:3308}/${MYSQLDATABASE:db_example}
-#    username: ${MYSQL_USER:root}
-#    password: ${MYSQL_PASSWORD:123456789}
+  #    username: ${MYSQL_USER:root}
+  #    password: ${MYSQL_PASSWORD:123456789}
   jpa:
     show-sql: true
     properties:
@@ -17,8 +17,8 @@ spring:
       client:
         registration:
           google:
-            client-id: "85998077224-t35s1f5h11lvf1nkdbm448dselumfs5t.apps.googleusercontent.com"
-            client-secret: "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"
+            client-id: "***"
+            client-secret: "***"
             redirect-uri: "http://localhost:8088/login-google"
           scope:
             - email
@@ -46,8 +46,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    password: aupseiyajgbrhsjy
-    username: project.service.1.1.0.@gmail.com
+    password: 1111
+    username: 1111
     protocol: smtp
     properties.mail.smtp:
       auth: true
@@ -61,8 +61,8 @@ bezkoder:
 
 google:
   app:
-    id: 85998077224-t35s1f5h11lvf1nkdbm448dselumfs5t.apps.googleusercontent.com
-    secret: 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
+    id: ****
+    secret: ****
   redirect:
     uri: https://account-service-production.up.railway.app/login-google
   link:

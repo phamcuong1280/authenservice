@@ -3,21 +3,21 @@ package com.example.accountservice.common.exception.constant;
 import lombok.Getter;
 
 @Getter
-public class HousingException extends RuntimeException {
-    private HousingBusinessError errorCode;
+public class ExceptionCustom extends RuntimeException {
+    private final BusinessError errorCode;
 
-    public HousingException(HousingBusinessError errorCode) {
+    public ExceptionCustom(BusinessError errorCode) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
     }
 
-    public HousingException(HousingBusinessError errorCode, String message) {
+    public ExceptionCustom(BusinessError errorCode, String message) {
         super(message);
         this.errorCode = errorCode;
         this.errorCode.setMessage(message);
     }
 
-    public HousingException(HousingBusinessError error, String message, Throwable cause) {
+    public ExceptionCustom(BusinessError error, String message, Throwable cause) {
         super(message, cause);
         this.errorCode = error;
     }

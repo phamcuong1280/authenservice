@@ -52,14 +52,8 @@ public class PaginationResource implements IPaginationResource {
                 Object this$next = this.getNext();
                 Object other$next = other.getNext();
                 if (this$next == null) {
-                    if (other$next != null) {
-                        return false;
-                    }
-                } else if (!this$next.equals(other$next)) {
-                    return false;
-                }
-
-                return true;
+                    return other$next == null;
+                } else return this$next.equals(other$next);
             }
         }
     }

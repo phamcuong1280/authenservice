@@ -1,9 +1,8 @@
 package com.example.accountservice.controllers;
 
-import com.example.accountservice.common.config.rest.BaseResponse;
-import com.example.accountservice.common.exception.HousingErrors;
+import com.example.accountservice.common.exception.MyErrors;
 import com.example.accountservice.common.exception.UserNotFound;
-import com.example.accountservice.common.exception.constant.HousingException;
+import com.example.accountservice.common.exception.constant.ExceptionCustom;
 import com.example.accountservice.common.security.jwt.JwtUtils;
 import com.example.accountservice.common.security.services.UserDetailsServiceImpl;
 import com.example.accountservice.common.security.services.UserPrincipal;
@@ -15,6 +14,7 @@ import com.example.accountservice.infrastructure.repository.JpaAccountRepository
 import com.example.accountservice.usecases.account.IAccountUseCase;
 import com.example.accountservice.usecases.token.ITokenUseCase;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -35,14 +35,14 @@ public class AuthController {
     private final AuthControllerMapper mapper;
 
     @PostMapping("/signin")
-    public BaseResponse<?> authenticateUser(@Valid @RequestBody LoginRequest request) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest request) {
         UserPrincipal userDetails = (UserPrincipal) userDetailsService.loadUserByUsername(request.getEmail());
         if (userDetails.getUuid() == null) {
-            return BaseResponse.ofFailed(HousingErrors.USER_NOT_UNAUTHORIZED);
+            return ResponseEntity.ok(MyErrors.USER_NOT_UNAUTHORIZED);
         }
         boolean matches = encoder.matches(request.getPassword(), userDetails.getPassword());
         if (userDetails.getUuid() == null || !matches) {
-            return BaseResponse.ofFailed(HousingErrors.USER_NOT_UNAUTHORIZED);
+            return ResponseEntity.ok(MyErrors.USER_NOT_UNAUTHORIZED);
         }
         jpaAccountRepository.login(userDetails.getUuid());
         return getBaseResponse(userDetails);
@@ -50,48 +50,48 @@ public class AuthController {
 
 
     @GetMapping("/{email}")
-    public BaseResponse<?> getByEmail(@PathVariable String email) {
-        return BaseResponse.ofSucceeded(jpaAccountRepository.findByEmailAndStatusIsTrue(email));
+    public ResponseEntity<?> getByEmail(@PathVariable String email) {
+        return ResponseEntity.ok(jpaAccountRepository.findByEmailAndStatusIsTrue(email));
     }
 
 
     @PostMapping("/signup")
-    public BaseResponse<?> registerUser(@Valid @RequestBody SignupRequest request) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest request) {
         if (accountUseCase.existsByEmail(request.getEmail())) {
-            return BaseResponse.ofFailed(HousingErrors.EMAIL_EXIST);
+            return ResponseEntity.ok(MyErrors.EMAIL_EXIST);
         }
-        return BaseResponse.ofSucceeded(mapper.from(accountUseCase.createUser(request)));
+        return ResponseEntity.ok(mapper.from(accountUseCase.createUser(request)));
     }
 
     @PostMapping("/password")
-    public BaseResponse<?> setPassword(@Valid @RequestBody LoginRequest request) {
+    public ResponseEntity<?> setPassword(@Valid @RequestBody LoginRequest request) {
         var account = jpaAccountRepository.findByEmailAndStatusIsTrue(request.getEmail()).orElseThrow(UserNotFound::new);
         account.setPassword(encoder.encode(request.getPassword()));
         jpaAccountRepository.save(account);
         UserPrincipal userDetails = (UserPrincipal) userDetailsService.loadUserByUsername(request.getEmail());
         boolean matches = encoder.matches(request.getPassword(), userDetails.getPassword());
         if (!matches) {
-            throw new HousingException(HousingErrors.USER_NOT_UNAUTHORIZED);
+            throw new ExceptionCustom(MyErrors.USER_NOT_UNAUTHORIZED);
         }
         return getBaseResponse(userDetails);
     }
 
 
-    private BaseResponse<?> getBaseResponse(UserPrincipal userDetails) {
-        return BaseResponse.ofSucceeded(new JwtResponse(jwtUtils.createToken(userDetails)));
+    private ResponseEntity<?> getBaseResponse(UserPrincipal userDetails) {
+        return ResponseEntity.ok(new JwtResponse(jwtUtils.createToken(userDetails)));
     }
 
     @GetMapping("/token/{refreshToken}")
-    public BaseResponse<?> test(@PathVariable String refreshToken) {
+    public ResponseEntity<?> test(@PathVariable String refreshToken) {
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return BaseResponse.ofSucceeded(tokenUseCase.getToken(userPrincipal.getUuid()));
+        return ResponseEntity.ok(tokenUseCase.getToken(userPrincipal.getUuid()));
     }
 
     @GetMapping("/signout")
-    public BaseResponse<?> logoutUser() {
+    public ResponseEntity<?> logoutUser() {
         var userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         jpaAccountRepository.logout(userDetails.getUuid());
-        return BaseResponse.ofSucceeded("logout success");
+        return ResponseEntity.ok("logout success");
     }
 //    @PostMapping("/refreshtoken")
 //    public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest request) {

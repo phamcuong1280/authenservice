@@ -9,7 +9,7 @@ public class Resource<T> {
     private T data;
 
     public Resource(String msg, int code) {
-        this.meta = new MetaResource(code, msg, (IPaginationResource) null);
+        this.meta = new MetaResource(code, msg, null);
     }
 
     public Resource(String msg, int code, PaginationResource pages) {
@@ -21,7 +21,7 @@ public class Resource<T> {
     }
 
     public Resource(T data) {
-        this.meta = new MetaResource(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), (IPaginationResource) null);
+        this.meta = new MetaResource(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), null);
         this.data = data;
     }
 
@@ -77,14 +77,8 @@ public class Resource<T> {
                 Object this$data = this.getData();
                 Object other$data = other.getData();
                 if (this$data == null) {
-                    if (other$data != null) {
-                        return false;
-                    }
-                } else if (!this$data.equals(other$data)) {
-                    return false;
-                }
-
-                return true;
+                    return other$data == null;
+                } else return this$data.equals(other$data);
             }
         }
     }

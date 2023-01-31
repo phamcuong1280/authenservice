@@ -52,14 +52,8 @@ public class PageParamResource {
                 Object this$rawQuery = this.getRawQuery();
                 Object other$rawQuery = other.getRawQuery();
                 if (this$rawQuery == null) {
-                    if (other$rawQuery != null) {
-                        return false;
-                    }
-                } else if (!this$rawQuery.equals(other$rawQuery)) {
-                    return false;
-                }
-
-                return true;
+                    return other$rawQuery == null;
+                } else return this$rawQuery.equals(other$rawQuery);
             }
         }
     }
